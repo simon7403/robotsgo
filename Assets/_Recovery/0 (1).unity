@@ -130,7 +130,6 @@ GameObject:
   - component: {fileID: 88168248}
   - component: {fileID: 88168247}
   - component: {fileID: 88168249}
-  - component: {fileID: 88168250}
   m_Layer: 0
   m_Name: RosComponent
   m_TagString: Untagged
@@ -187,19 +186,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b30347138b584a341b28875400b81f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestSubscriber
---- !u!114 &88168250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 88168246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70fb6b2532f6e4c4ab0396571e094d7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpawnPhysicalBots
-  chariotPrefab: {fileID: 1921531661}
 --- !u!1 &111169904
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,15 +211,14 @@ Transform:
   m_GameObject: {fileID: 111169904}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.8, y: 0.5, z: 3.42}
-  m_LocalScale: {x: 1.1, y: 1, z: 1.09}
+  m_LocalPosition: {x: -0.24197, y: 0.5, z: -1.45972}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1038566337}
   - {fileID: 969457241}
   - {fileID: 952317862}
   - {fileID: 2083870786}
-  - {fileID: 458344443}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &140609904
@@ -483,7 +468,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 5, y: 10, z: 5}
+  m_LocalPosition: {x: 0, y: 8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -533,37 +518,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!1 &331020242
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 331020243}
-  m_Layer: 0
-  m_Name: spareBots
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &331020243
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331020242}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.75454, y: -0.02, z: 3.26954}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &349555314
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,7 +530,6 @@ GameObject:
   - component: {fileID: 349555317}
   - component: {fileID: 349555316}
   - component: {fileID: 349555315}
-  - component: {fileID: 349555319}
   m_Layer: 0
   m_Name: ControlChariot
   m_TagString: Untagged
@@ -598,7 +551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RobotControl
   wheelbase: 0.2
   manualSpeed: 2
-  manualTurnSpeed: 3
+  manualTurnSpeed: 7
 --- !u!114 &349555316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,10 +588,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!4 &349555318
 Transform:
@@ -649,7 +602,7 @@ Transform:
   m_GameObject: {fileID: 349555314}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 10, y: 0, z: 10}
+  m_LocalPosition: {x: -4.22477, y: 0, z: -0.66369}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -660,19 +613,6 @@ Transform:
   - {fileID: 478099313}
   m_Father: {fileID: 1299783109}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &349555319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 349555314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3681117451bed6e45b030441e926d549, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HunterBrain
-  id: 0
 --- !u!1 &371450838
 GameObject:
   m_ObjectHideFlags: 0
@@ -1021,11 +961,11 @@ Transform:
   m_GameObject: {fileID: 458344439}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24545497, y: -0.5, z: 1.4678899}
-  m_LocalScale: {x: 1, y: 1, z: 1.0091743}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 111169905}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &478099312
 GameObject:
@@ -2462,7 +2402,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1299783109}
-  - component: {fileID: 1299783110}
   - component: {fileID: 1299783108}
   m_Layer: 0
   m_Name: allBots
@@ -2484,7 +2423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PublishSimBots
   allBots: {fileID: 1299783107}
-  publishRate: 0.01
+  publishRate: 1
 --- !u!4 &1299783109
 Transform:
   m_ObjectHideFlags: 0
@@ -2494,29 +2433,16 @@ Transform:
   m_GameObject: {fileID: 1299783107}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 4.53377, y: 0, z: 0.66369}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1921531662}
-  - {fileID: 349555318}
   - {fileID: 1751718611}
   - {fileID: 2041317915}
+  - {fileID: 1921531662}
+  - {fileID: 349555318}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1299783110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299783107}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70fb6b2532f6e4c4ab0396571e094d7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpawnPhysicalBots
-  chariotPrefab: {fileID: 1921531661}
 --- !u!1 &1304533789
 GameObject:
   m_ObjectHideFlags: 0
@@ -2969,6 +2895,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1433224051}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1640934202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1640934204}
+  - component: {fileID: 1640934203}
+  m_Layer: 0
+  m_Name: physicalRobots
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1640934203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640934202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70fb6b2532f6e4c4ab0396571e094d7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnPhysicalBots
+  chariotPrefab: {fileID: 1751718610}
+--- !u!4 &1640934204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640934202}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.07991, y: 0.08737, z: -0.06305}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1649376254
 GameObject:
   m_ObjectHideFlags: 0
@@ -3139,7 +3110,6 @@ GameObject:
   - component: {fileID: 1751718612}
   - component: {fileID: 1751718613}
   - component: {fileID: 1751718614}
-  - component: {fileID: 1751718615}
   m_Layer: 0
   m_Name: Chariot (0)
   m_TagString: Untagged
@@ -3156,7 +3126,7 @@ Transform:
   m_GameObject: {fileID: 1751718610}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -4.53377, y: 0, z: -0.66369}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3189,10 +3159,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &1751718613
 MonoBehaviour:
@@ -3201,7 +3171,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751718610}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 502d0daa373138f47bb0c63084cc7512, type: 3}
   m_Name: 
@@ -3215,26 +3185,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751718610}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b72b14c18da94fb42a9a11fa4bf9373e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WheelEncoder
   wheelbase: 0.2
   publishRate: 10
---- !u!114 &1751718615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751718610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3681117451bed6e45b030441e926d549, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HunterBrain
-  id: 0
 --- !u!1 &1921531661
 GameObject:
   m_ObjectHideFlags: 0
@@ -3247,7 +3204,6 @@ GameObject:
   - component: {fileID: 1921531665}
   - component: {fileID: 1921531664}
   - component: {fileID: 1921531663}
-  - component: {fileID: 1921531666}
   m_Layer: 0
   m_Name: Chariot (2)
   m_TagString: Untagged
@@ -3264,7 +3220,7 @@ Transform:
   m_GameObject: {fileID: 1921531661}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 10, y: 0, z: 0}
+  m_LocalPosition: {x: -4.785, y: 0, z: -0.66369}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3282,7 +3238,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1921531661}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b72b14c18da94fb42a9a11fa4bf9373e, type: 3}
   m_Name: 
@@ -3296,7 +3252,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1921531661}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 502d0daa373138f47bb0c63084cc7512, type: 3}
   m_Name: 
@@ -3325,24 +3281,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1921531666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1921531661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3681117451bed6e45b030441e926d549, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HunterBrain
-  id: 0
 --- !u!1 &1929544405
 GameObject:
   m_ObjectHideFlags: 0
@@ -3513,7 +3456,6 @@ GameObject:
   - component: {fileID: 2041317918}
   - component: {fileID: 2041317917}
   - component: {fileID: 2041317916}
-  - component: {fileID: 2041317919}
   m_Layer: 0
   m_Name: Chariot (1)
   m_TagString: Untagged
@@ -3530,7 +3472,7 @@ Transform:
   m_GameObject: {fileID: 2041317914}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: -5.081, y: 0, z: -0.66369}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3548,7 +3490,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041317914}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b72b14c18da94fb42a9a11fa4bf9373e, type: 3}
   m_Name: 
@@ -3562,7 +3504,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041317914}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 502d0daa373138f47bb0c63084cc7512, type: 3}
   m_Name: 
@@ -3591,24 +3533,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2041317919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2041317914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3681117451bed6e45b030441e926d549, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HunterBrain
-  id: 0
 --- !u!1 &2083870785
 GameObject:
   m_ObjectHideFlags: 0
@@ -3844,6 +3773,7 @@ SceneRoots:
   - {fileID: 88168248}
   - {fileID: 1194857475}
   - {fileID: 1004382400}
+  - {fileID: 458344443}
+  - {fileID: 1640934204}
   - {fileID: 111169905}
   - {fileID: 1299783109}
-  - {fileID: 331020243}

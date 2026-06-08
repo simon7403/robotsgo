@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraManager : MonoBehaviour
 {
     public Camera mainCamera;
     public Camera followCamera;
+    private float cooldown = 0f;
 
     void Start()
     {
@@ -13,10 +15,13 @@ public class CameraManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (UnityEngine.InputSystem.Keyboard.current.zKey.wasPressedThisFrame)
+        cooldown -= Time.deltaTime;
+
+        if (Keyboard.current.zKey.isPressed && cooldown <= 0f)
         {
             mainCamera.enabled = !mainCamera.enabled;
             followCamera.enabled = !followCamera.enabled;
+            cooldown = 0.3f;
         }
     }
 }

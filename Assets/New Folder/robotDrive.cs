@@ -1,13 +1,12 @@
 using UnityEngine;
 using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.Geometry;
-using UnityEngine.InputSystem;
 
 public class RobotDrive : MonoBehaviour
 {
+    public int id = 0;
     public float wheelbase = 0.2f;
-    public float manualSpeed = 2.0f;
-    public float manualTurnSpeed = 2.0f;
+    
     private Rigidbody rb;
     private float linearSpeed = 0f;
     private float angularSpeed = 0f;
@@ -15,7 +14,7 @@ public class RobotDrive : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        ROSConnection.GetOrCreateInstance().Subscribe<TwistMsg>("/cmd_vel", DriveCallback);
+        ROSConnection.GetOrCreateInstance().Subscribe<TwistMsg>($"/robot_{id}/cmd_vel", DriveCallback);
     }
 
     void DriveCallback(TwistMsg msg)
@@ -26,24 +25,8 @@ public class RobotDrive : MonoBehaviour
 
     void FixedUpdate()
     {
-        var keyboard = Keyboard.current;
-        bool manualInput = false;
-        float currentLinear = 0f;
-        float currentAngular = 0f;
-
-        if (keyboard.wKey.isPressed) { currentLinear = manualSpeed; manualInput = true; }
-        if (keyboard.sKey.isPressed) { currentLinear = -manualSpeed; manualInput = true; }
-        if (keyboard.aKey.isPressed) { currentAngular = -manualTurnSpeed; manualInput = true; }
-        if (keyboard.dKey.isPressed) { currentAngular = manualTurnSpeed; manualInput = true; }
-
-        if (!manualInput)
-        {
-            currentLinear = linearSpeed;
-            currentAngular = angularSpeed;
-        }
-
-        Vector3 velocity = -transform.forward * currentLinear;
+        Vector3 velocity = -transform.forward * linearSpeed;
         rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
-        rb.angularVelocity = new Vector3(0, currentAngular, 0);
+        rb.angularVelocity = new Vector3(0, angularSpeed, 0);
     }
 }

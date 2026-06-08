@@ -3,9 +3,9 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;
-    public float distance = 0.5f;
-    public float height = 0.3f;
-    public float smoothSpeed = 5f;
+    public float distance = 0.8f;
+    public float height = 0.45f;
+    public float smoothSpeed = 10f;
 
     void FixedUpdate()
     {

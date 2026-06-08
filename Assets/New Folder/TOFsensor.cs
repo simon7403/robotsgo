@@ -1,22 +1,24 @@
-using UnityEngine;
-using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.Sensor;
+using RosMessageTypes.Std;
+using Unity.Robotics.ROSTCPConnector;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class TOFSensor : MonoBehaviour
 {
     public float maxRange = 2.0f;
-    public float publishRate = 10f;
+    public float publishfrequency = 2f;
     private float timer = 0f;
 
     void Start()
     {
-        ROSConnection.GetOrCreateInstance().RegisterPublisher<RangeMsg>("/tof_sensor");
+        ROSConnection.GetOrCreateInstance().RegisterPublisher<Float32Msg>("/tof_sensor");
     }
 
     void FixedUpdate()
     {
         timer += Time.deltaTime;
-        if (timer >= 1f / publishRate)
+        if (timer >= publishfrequency)
         {
             timer = 0f;
             PublishDistance();
@@ -33,10 +35,6 @@ public class TOFSensor : MonoBehaviour
         else
             distance = maxRange;
 
-        RangeMsg msg = new RangeMsg();
-        msg.range = distance;
-        msg.max_range = maxRange;
-        msg.min_range = 0.03f;
-        ROSConnection.GetOrCreateInstance().Publish("/tof_sensor", msg);
+        ROSConnection.GetOrCreateInstance().Publish("/tof_sensor", new Float32Msg(distance));
     }
 }
