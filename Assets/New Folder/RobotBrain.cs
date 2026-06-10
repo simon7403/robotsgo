@@ -1,3 +1,4 @@
+using System.Linq;
 using NUnit.Framework.Constraints;
 using RosMessageTypes.Geometry;
 using RosMessageTypes.Std;
@@ -10,13 +11,23 @@ public class RobotBrain : MonoBehaviour
     public int id = 0;
     private int _totalRobots = 0;
     private Vector3 _runnerPos;
+    private Vector3[] _allBotPositions;
     private bool runnerLocationKnown = false;
     private bool chasing = false;
     private int runnerId;
     private string gameState;
+    private Rigidbody _rb;
+
+    public Vector3 testTarget;
+    public bool testDrive = false;
+
+    enum GameState { Idle, Start, Stop, Seen, Chase, Ready }
+    GameState _gameState;
 
     void Start()
     {
+        _rb = GetComponent<Rigidbody>();
+        _rb.position = new Vector3(transform.position.x, 0f, transform.position.z);
         ROSConnection.GetOrCreateInstance().Subscribe<PoseArrayMsg>("/unity/robots/pos", OnRobotPositions);
         ROSConnection.GetOrCreateInstance().Subscribe<StringMsg>("/game/command", OnGameCommand);
     }
@@ -24,98 +35,132 @@ public class RobotBrain : MonoBehaviour
     void OnRobotPositions(PoseArrayMsg msg)
     {
         _totalRobots = msg.poses.Length;
+        _allBotPositions = new Vector3[msg.poses.Length];
+
+        for (int i = 0; i < _totalRobots; i++)
+        {
+            var p = msg.poses[i].position;
+            _allBotPositions[i] = new Vector3((float)p.x, 0f, (float)p.z);
+        }
+
+        _runnerPos = _allBotPositions[runnerId];
     }
 
     void OnGameCommand(StringMsg msg)
     {
-        string data = msg.data;
-
-        if (int.TryParse(data, out int commandId))
+        if (int.TryParse(msg.data, out int runnerId))
         {
-            Debug.Log($"Runner is robot {commandId}");
-            runnerId = commandId;
+            this.runnerId = runnerId;
             return;
         }
-        switch (data)
+
+        _gameState = msg.data switch
         {
-            case "Start":
-                Debug.Log("Game Started!");
-                break;
-            case "Stop":
-                Debug.Log("Game Stopped!");
-                break;
-            case "seen":
-                Debug.Log("Runner seen!");
-                runnerLocationKnown = true;
-                break;
-            case "chase":
-                Debug.Log("Chasing runner!");
-                chasing = true;
-                break;
-        }
+            "START" => GameState.Start,
+            "STOP" => GameState.Stop,
+            "SEEN" => GameState.Seen,
+            "CHASE" => GameState.Chase,
+            "READY" => GameState.Ready,
+            _ => _gameState
+        };
+
+        Debug.Log($"Game state: {_gameState}");
     }
+
     void FixedUpdate()
     {
-        if (gameState == "stop") return;
-        else if (id == runnerId) runnerBrain();
-        else hunterBrain();
+        if (testDrive)
+        {
+            driveTo(testTarget);
+            return;
+        }
+
+        if (_gameState == GameState.Idle || _gameState == GameState.Stop) return;
+
+        if (id == runnerId)
+            runnerBrain(); // altijd actief bij READY en START
+        //else if (_gameState != GameState.Ready)
+        //    hunterBrain(); // hunters wachten tijdens READY
     }
 
     void runnerBrain()
     {
-        if () //my pos +- iets == any other robot pos
-        {
-            driveTo(nextPoint()); //away from other robot
-        } else if () //location in corner
-        {
-            //roaming of chilling random maybe idc
-        }
-        else
-        {
-            driveTo(nextPoint()); //closest corner
-        }
-    }
+        Vector3 myPos = transform.position;
+        Vector3 fleeTarget = Vector3.zero;
+        bool hunterNearby = false;
 
-    void hunterBrain()
-    {
-        if (runnerLocationKnown)
+        // check of een hunter dichtbij is
+        for (int i = 0; i < _allBotPositions.Length; i++)
         {
-            nextPoint(getPoint());
-        }
-        else
-        {
-            roam();
-        }
-    }
-    void roam()
-    {
-        driveTo(nextPoint()); //random point closeby
-        lookAround();
-        if (gameState == "seen") runnerLocationKnown = true;
-    }
-
-    Vector3 getPoint()
-    {
-        //calc all points around runner
-        //sort from closest one to me
-        //claim it
-        //publish it
-        //kijk naar alle /robot_{id}/claim
-        Vector3 myPoint;
-        if () //claimed point is taken by robot with lower ID
-        {
-            for (int i = 0; i < _totalRobots * 2; i++)
+            if (i == runnerId) continue;
+            if (Vector3.Distance(myPos, _allBotPositions[i]) < 3f)
             {
-                //check next point in array
+                hunterNearby = true;
+                fleeTarget += myPos - _allBotPositions[i]; // weg van elke dichtbije hunter
             }
         }
-            return myPoint;
+
+        if (hunterNearby)
+        {
+            driveTo(myPos + fleeTarget.normalized * 3f);
+            return;
+        }
+
+        // geen hunter dichtbij, ga naar dichtstbijzijnde hoek
+        Vector3[] corners = {
+        new Vector3(0, 0, 0),
+        new Vector3(10, 0, 0),
+        new Vector3(0, 0, 10),
+        new Vector3(10, 0, 10)
+    };
+
+        Vector3 closestCorner = corners.OrderBy(c => Vector3.Distance(myPos, c)).First();
+
+        if (Vector3.Distance(myPos, closestCorner) < 0.5f)
+            return; // al in hoek, chillen
+
+        driveTo(closestCorner);
     }
-    Vector3 nextPoint(Vector3 target)
-    {
-        //TODO pathfinding 
-        
-    }
+
+    //void hunterBrain()
+    //{
+    //    if (runnerLocationKnown)
+    //    {
+    //        nextPoint(getPoint());
+    //    }
+    //    else
+    //    {
+    //        roam();
+    //    }
+    //}
+    //void roam()
+    //{
+    //    driveTo(nextPoint()); //random point closeby
+    //    lookAround();
+    //    if (gameState == "seen") runnerLocationKnown = true;
+    //}
+
+    //Vector3 getPoint()
+    //{
+    //    //calc all points around runner
+    //    //sort from closest one to me
+    //    //claim it
+    //    //publish it
+    //    //kijk naar alle /robot_{id}/claim
+    //    Vector3 myPoint;
+    //    if () //claimed point is taken by robot with lower ID
+    //    {
+    //        for (int i = 0; i < _totalRobots * 2; i++)
+    //        {
+    //            //check next point in array
+    //        }
+    //    }
+    //    return myPoint;
+    //}
+    //Vector3 nextPoint(Vector3 target)
+    //{
+    //    //TODO pathfinding 
+    //}
 
     void lookAround()
     {
@@ -124,6 +169,25 @@ public class RobotBrain : MonoBehaviour
 
     void driveTo(Vector3 target)
     {
-        //TODO drive to target
+        Vector3 dir = target - transform.position;
+        dir.y = 0;
+
+        if (dir.magnitude < 0.2f)
+        {
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            return;
+        }
+
+        float targetAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+        float angleDiff = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
+
+        _rb.angularVelocity = new Vector3(0, angleDiff * 0.05f, 0);
+
+        // alleen rijden als hij al roughly de goede kant op wijst
+        if (Mathf.Abs(angleDiff) < 20f)
+            _rb.linearVelocity = new Vector3(transform.forward.x, 0, transform.forward.z) * 2f;
+        else
+            _rb.linearVelocity = Vector3.zero;
     }
 }

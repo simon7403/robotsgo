@@ -16,7 +16,7 @@ public class PublishSimBots : MonoBehaviour
         ROSConnection.GetOrCreateInstance().RegisterPublisher<PoseArrayMsg>("/unity/robots/pos");
     }
 
-    void Update()
+    void FixedUpdate()
     {
         _timer += Time.deltaTime;
         if (_timer < publishRate) return;
@@ -48,5 +48,6 @@ public class PublishSimBots : MonoBehaviour
         };
 
         ROSConnection.GetOrCreateInstance().Publish("/unity/robots/pos", msg);
+        print($"sent {msg} robot positions");
     }
 }
