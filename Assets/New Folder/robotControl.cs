@@ -36,14 +36,15 @@ public class RobotControl : MonoBehaviour
         if (keyboard.aKey.isPressed) { currentAngular = -manualTurnSpeed; manualInput = true; }
         if (keyboard.dKey.isPressed) { currentAngular = manualTurnSpeed; manualInput = true; }
 
-        if (!manualInput)
+        if (manualInput)
         {
-            currentLinear = linearSpeed;
-            currentAngular = angularSpeed;
+            Vector3 velocity = transform.forward * currentLinear;
+            rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
+            rb.angularVelocity = new Vector3(0, currentAngular, 0);
+            return;
         }
 
-        Vector3 velocity = -transform.forward * currentLinear;
-        rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
-        rb.angularVelocity = new Vector3(0, currentAngular, 0);
+        currentLinear = linearSpeed;
+        currentAngular = angularSpeed;
     }
 }

@@ -4,13 +4,16 @@ using RosMessageTypes.Geometry;
 using RosMessageTypes.Std;
 using Unity.Robotics.ROSTCPConnector;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
 public class RobotBrain : MonoBehaviour
 {
     public int id = 0;
+    public int TurnSpeed = 2;
     private int _totalRobots = 0;
     private Vector3 _runnerPos;
+    private Vector3 myPos;
     private Vector3[] _allBotPositions;
     private bool runnerLocationKnown = false;
     private bool chasing = false;
@@ -21,7 +24,7 @@ public class RobotBrain : MonoBehaviour
     public Vector3 testTarget;
     public bool testDrive = false;
 
-    enum GameState { Idle, Start, Stop, Seen, Chase, Ready }
+    enum GameState { Idle, Start, Stop, Seen, Chase, Ready, Register }
     GameState _gameState;
 
     void Start()
@@ -42,8 +45,8 @@ public class RobotBrain : MonoBehaviour
             var p = msg.poses[i].position;
             _allBotPositions[i] = new Vector3((float)p.x, 0f, (float)p.z);
         }
-
         _runnerPos = _allBotPositions[runnerId];
+        myPos = _allBotPositions[id];
     }
 
     void OnGameCommand(StringMsg msg)
@@ -61,6 +64,7 @@ public class RobotBrain : MonoBehaviour
             "SEEN" => GameState.Seen,
             "CHASE" => GameState.Chase,
             "READY" => GameState.Ready,
+            "REGISTER" => GameState.Register,
             _ => _gameState
         };
 
@@ -79,13 +83,12 @@ public class RobotBrain : MonoBehaviour
 
         if (id == runnerId)
             runnerBrain(); // altijd actief bij READY en START
-        //else if (_gameState != GameState.Ready)
-        //    hunterBrain(); // hunters wachten tijdens READY
+        else if (_gameState != GameState.Ready)
+            hunterBrain(); // hunters wachten tijdens READY
     }
 
     void runnerBrain()
     {
-        Vector3 myPos = transform.position;
         Vector3 fleeTarget = Vector3.zero;
         bool hunterNearby = false;
 
@@ -122,49 +125,25 @@ public class RobotBrain : MonoBehaviour
         driveTo(closestCorner);
     }
 
-    //void hunterBrain()
-    //{
-    //    if (runnerLocationKnown)
-    //    {
-    //        nextPoint(getPoint());
-    //    }
-    //    else
-    //    {
-    //        roam();
-    //    }
-    //}
-    //void roam()
-    //{
-    //    driveTo(nextPoint()); //random point closeby
-    //    lookAround();
-    //    if (gameState == "seen") runnerLocationKnown = true;
-    //}
-
-    //Vector3 getPoint()
-    //{
-    //    //calc all points around runner
-    //    //sort from closest one to me
-    //    //claim it
-    //    //publish it
-    //    //kijk naar alle /robot_{id}/claim
-    //    Vector3 myPoint;
-    //    if () //claimed point is taken by robot with lower ID
-    //    {
-    //        for (int i = 0; i < _totalRobots * 2; i++)
-    //        {
-    //            //check next point in array
-    //        }
-    //    }
-    //    return myPoint;
-    //}
-    //Vector3 nextPoint(Vector3 target)
-    //{
-    //    //TODO pathfinding 
-    //}
-
-    void lookAround()
+    void hunterBrain()
     {
-        //TODO look around 
+        if (runnerLocationKnown)
+        {
+            nextPoint(getPoint());
+        }
+        else
+        {
+            roam();
+        }
+    }
+    void roam()
+    {
+        driveTo(nextPoint()); //current pos 
+    }
+
+    Vector3 nextPoint(Vector3 target)
+    {
+        //TODO pathfinding 
     }
 
     void driveTo(Vector3 target)
@@ -185,7 +164,7 @@ public class RobotBrain : MonoBehaviour
         _rb.angularVelocity = new Vector3(0, angleDiff * 0.05f, 0);
 
         // alleen rijden als hij al roughly de goede kant op wijst
-        if (Mathf.Abs(angleDiff) < 20f)
+        if (Mathf.Abs(angleDiff) < 10f)
             _rb.linearVelocity = new Vector3(transform.forward.x, 0, transform.forward.z) * 2f;
         else
             _rb.linearVelocity = Vector3.zero;
