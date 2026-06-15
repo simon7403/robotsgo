@@ -127,7 +127,8 @@ public class RobotBrain : MonoBehaviour
     {
         if (runnerLocationKnown)
         {
-            nextPoint();
+            Vector3 targetPos = getPoint();
+            driveTo(nextPoint(targetPos));
         }
         else
         {
@@ -136,13 +137,60 @@ public class RobotBrain : MonoBehaviour
     }
     void roam()
     {
-        Vector3 randomPoint = new Vector3(Random.Range(), 0f, Random.Range());
-        driveTo(nextPoint(myPos - Random.Range(0.5f, 2f)); //point behind robot with a 0.5-2 amount of units
+        driveTo(nextPoint(null)); //current pos
     }
 
-    Vector3 nextPoint(Vector3 target)
+    Vector3 nextPoint(Vector3? target)
     {
-        //TODO pathfinding 
+        Vector3 combinedForce = Vector3.zero;
+
+        if (target.HasValue)
+        {
+            Vector3 toTarget = target.Value - myPos;
+            toTarget.y = 0;
+            combinedForce += toTarget.normalized * 1.5f;
+        }
+
+        if (__allBotPositions != null && _allBotPositions.Length > 0)
+        {
+            for (int i = 0; i < _allBotPositions.Length; i++)
+            {
+                if (i == id || i == runnerId) continue;
+
+                Vector3 toHunter = myPos - _allBotPositions[i];
+                toHunter.y = 0;
+                float distance = toHunter.magnitude;
+
+                if (distance < 5f || distance > 0.1f)
+                {
+                    combinedForce += toHunter.normalized * (1.0f / distance)
+                }
+            }
+        }
+
+        float minX = 0f, maxX = 10f;
+        float minZ = 0f, maxZ = 10f;
+        float wallAvoidanceDistance = 1.5f;
+        float wallPushStrength = 1.2f;
+
+        if (myPos.x - minX < wallAvoidanceDistance)
+            combinedForce += Vector3.right * (wallPushStrength / Mathf.Max(0.1f, myPos.x - minX));
+        if (maxX - myPos.x < wallAvoidanceDistance)
+            combinedForce += Vector3.left * (wallPushStrength / Mathf.Max(0.1f, maxX - myPos.x));
+        if (myPos.z - minZ < wallAvoidanceDistance)
+            combinedForce += Vector3.forward * (wallPushStrength / Mathf.Max(0.1f, myPos.z - minZ));
+        if (maxZ - myPos.z < wallAvoidanceDistance)
+            combinedForce += Vector3.back * (wallPushStrength / Mathf.Max(0.1f, maxZ - myPos.z));
+
+        Vector2 randomCircle = Random.insideUnitCircle * 0.3f;
+        combinedForce += new Vector3(randomCircle.x, 0, randomCircle.y);
+
+        if (combinedForce.sqrMagnitude < 0.01f)
+        {
+            combinedForce = transform.forward;
+        }
+
+        return myPos + combinedForce.normalized;
     }
 
     void driveTo(Vector3 target)
