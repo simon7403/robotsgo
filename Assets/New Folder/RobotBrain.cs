@@ -4,8 +4,6 @@ using RosMessageTypes.Geometry;
 using RosMessageTypes.Std;
 using Unity.Robotics.ROSTCPConnector;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 
 public class RobotBrain : MonoBehaviour
 {
