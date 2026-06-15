@@ -4,8 +4,6 @@ using RosMessageTypes.Geometry;
 using RosMessageTypes.Std;
 using Unity.Robotics.ROSTCPConnector;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 
 public class RobotBrain : MonoBehaviour
 {
@@ -129,7 +127,7 @@ public class RobotBrain : MonoBehaviour
     {
         if (runnerLocationKnown)
         {
-            nextPoint(getPoint());
+            nextPoint();
         }
         else
         {
@@ -138,7 +136,8 @@ public class RobotBrain : MonoBehaviour
     }
     void roam()
     {
-        driveTo(nextPoint()); //current pos 
+        Vector3 randomPoint = new Vector3(Random.Range(), 0f, Random.Range());
+        driveTo(nextPoint(myPos - Random.Range(0.5f, 2f)); //point behind robot with a 0.5-2 amount of units
     }
 
     Vector3 nextPoint(Vector3 target)
