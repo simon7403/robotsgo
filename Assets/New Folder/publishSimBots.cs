@@ -13,7 +13,7 @@ public class PublishSimBots : MonoBehaviour
 
     void Start()
     {
-        ROSConnection.GetOrCreateInstance().RegisterPublisher<PoseArrayMsg>("/unity/robots/pos");
+        ROSConnection.GetOrCreateInstance().RegisterPublisher<PoseArrayMsg>("/unity/pos");
     }
 
     void FixedUpdate()
@@ -31,12 +31,15 @@ public class PublishSimBots : MonoBehaviour
 
         foreach (Transform child in allBots.transform)
         {
+            var brain = child.GetComponent<RobotBrain>();
+            if (brain == null) continue;
+
             var pos = child.position;
             var rot = child.rotation;
 
             poses.Add(new PoseMsg
             {
-                position = new PointMsg(pos.x, 0f, pos.z),
+                position = new PointMsg(pos.x, pos.z, brain.id), // y=Unity Z, z=robot ID
                 orientation = new QuaternionMsg(rot.x, rot.y, rot.z, rot.w)
             });
         }
@@ -47,7 +50,7 @@ public class PublishSimBots : MonoBehaviour
             poses = poses.ToArray()
         };
 
-        ROSConnection.GetOrCreateInstance().Publish("/unity/robots/pos", msg);
-        print($"sent {msg} robot positions");
+        ROSConnection.GetOrCreateInstance().Publish("/unity/pos", msg);
+        //print($"Sent {poses.Count} robot positions");
     }
 }

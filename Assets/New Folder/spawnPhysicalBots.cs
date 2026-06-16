@@ -21,7 +21,7 @@ public class SpawnPhysicalBots : MonoBehaviour
 
     void UpdateRobots(PoseArrayMsg msg)
     {
-        print($"Received {msg} robot positions");
+        //print($"Received {msg} robot positions");
         for (int i = 0; i < msg.poses.Length; i++)
         {
             if (!_robots.ContainsKey(i))
