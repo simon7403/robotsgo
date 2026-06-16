@@ -14,6 +14,8 @@ public class RobotBrain : MonoBehaviour
     private bool runnerVisible = false;
     private int runnerId = -1;
     private Rigidbody _rb;
+    private Vector3 _startPos;
+
 
     public Vector3 testTarget;
     public bool testDrive = false;
@@ -25,6 +27,7 @@ public class RobotBrain : MonoBehaviour
 
     void Start()
     {
+        _startPos = transform.position; // voeg dit toe
         _rb = GetComponent<Rigidbody>();
         _rb.position = new Vector3(transform.position.x, 0f, transform.position.z);
 
@@ -108,6 +111,9 @@ public class RobotBrain : MonoBehaviour
                 runnerId = -1;
                 runnerVisible = false;
                 _gameState = GameState.Idle;
+                _rb.linearVelocity = Vector3.zero;
+                _rb.angularVelocity = Vector3.zero;
+                _rb.position = new Vector3(_startPos.x, 0f, _startPos.z);
                 _ros.Publish("/game/robots/ready", new Int32Msg { data = id });
                 break;
         }

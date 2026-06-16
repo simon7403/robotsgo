@@ -35,12 +35,16 @@ public class PublishSimBots : MonoBehaviour
             if (brain == null) continue;
 
             var pos = child.position;
-            var rot = child.rotation;
+
+            // Unity Y-up naar ROS2 Z-up: yaw in Unity = -yaw in ROS2
+            float yawUnity = child.eulerAngles.y * Mathf.Deg2Rad;
+            float yawRos = -yawUnity;
+            float halfYaw = yawRos * 0.5f;
 
             poses.Add(new PoseMsg
             {
-                position = new PointMsg(pos.x, pos.z, brain.id), // y=Unity Z, z=robot ID
-                orientation = new QuaternionMsg(rot.x, rot.y, rot.z, rot.w)
+                position = new PointMsg(pos.x, pos.z, brain.id),
+                orientation = new QuaternionMsg(0, 0, Mathf.Sin(halfYaw), Mathf.Cos(halfYaw))
             });
         }
 
@@ -51,6 +55,6 @@ public class PublishSimBots : MonoBehaviour
         };
 
         ROSConnection.GetOrCreateInstance().Publish("/unity/pos", msg);
-        //print($"Sent {poses.Count} robot positions");
+        print($"Published {msg} robot positions");
     }
 }
