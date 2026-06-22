@@ -17,10 +17,12 @@ public class SpawnPhysicalBots : MonoBehaviour
     void Start()
     {
         ROSConnection.GetOrCreateInstance().Subscribe<PoseArrayMsg>("/cam/pos", UpdateRobots);
+        print("yo");
     }
 
     void UpdateRobots(PoseArrayMsg msg)
     {
+        print(msg);
         //print($"Received {msg} robot positions");
         for (int i = 0; i < msg.poses.Length; i++)
         {

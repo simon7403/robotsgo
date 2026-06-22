@@ -8,9 +8,13 @@ public class RobotControl : MonoBehaviour
     public float wheelbase = 0.2f;
     public float manualSpeed = 2.0f;
     public float manualTurnSpeed = 2.0f;
+    public float jumpForce = 5.0f;
+    public float groundCheckDistance = 0.1f;
+
     private Rigidbody rb;
     private float linearSpeed = 0f;
     private float angularSpeed = 0f;
+    private float verticalSpeed = 0f;
 
     void Start()
     {
@@ -22,6 +26,12 @@ public class RobotControl : MonoBehaviour
     {
         linearSpeed = (float)msg.linear.x;
         angularSpeed = (float)msg.angular.z;
+        verticalSpeed = (float)msg.linear.y;
+    }
+
+    bool IsGrounded()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance + 0.05f);
     }
 
     void FixedUpdate()
@@ -35,6 +45,13 @@ public class RobotControl : MonoBehaviour
         if (keyboard.sKey.isPressed) { currentLinear = -manualSpeed; manualInput = true; }
         if (keyboard.aKey.isPressed) { currentAngular = -manualTurnSpeed; manualInput = true; }
         if (keyboard.dKey.isPressed) { currentAngular = manualTurnSpeed; manualInput = true; }
+
+        // Springen: alleen één keer per druk, en alleen als je op de grond staat
+        if (keyboard.spaceKey.wasPressedThisFrame && IsGrounded())
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+            manualInput = true;
+        }
 
         if (manualInput)
         {

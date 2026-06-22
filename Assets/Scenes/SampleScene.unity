@@ -293,7 +293,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 88168246}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70fb6b2532f6e4c4ab0396571e094d7a, type: 3}
   m_Name: 
@@ -1017,7 +1017,7 @@ Transform:
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3.22, z: 0}
+  m_LocalPosition: {x: -2.99, y: 5.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2310,7 +2310,7 @@ Transform:
   m_GameObject: {fileID: 832575517}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 100, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2328,6 +2328,7 @@ GameObject:
   - component: {fileID: 877966223}
   - component: {fileID: 877966222}
   - component: {fileID: 877966224}
+  - component: {fileID: 877966225}
   m_Layer: 0
   m_Name: ControlChariot
   m_TagString: Untagged
@@ -2366,8 +2367,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3681117451bed6e45b030441e926d549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HunterBrain
-  id: 30
-  TurnSpeed: 2
+  id: 104
+  MaxSpeed: 2
+  RunnerSpeed: 3
+  HunterSpeed: 2
+  GoalAttractionStrength: 2
+  MinDistanceToGoal: 0.3
+  RobotRepulsionStrength: 1.5
+  RobotInfluenceRadius: 3
+  MinRobotSeparation: 0.3
+  WallRepulsionStrength: 1.2
+  WallSafetyMargin: 1.5
+  JitterStrength: 0.3
+  JitterInterval: 0.2
+  CornerChangeInterval: 5
+  HunterFleeRadius: 3
   testTarget: {x: 0, y: 0, z: 0}
   testDrive: 0
 --- !u!54 &877966223
@@ -2412,6 +2426,29 @@ MonoBehaviour:
   wheelbase: 0.2
   manualSpeed: 2
   manualTurnSpeed: 3
+  jumpForce: 2
+  groundCheckDistance: 0.1
+--- !u!65 &877966225
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877966220}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
+  m_Center: {x: 0, y: 0.04, z: 0}
 --- !u!1 &897810518
 GameObject:
   m_ObjectHideFlags: 0
@@ -2792,7 +2829,7 @@ Transform:
   m_GameObject: {fileID: 1004382398}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.10813, y: 0, z: -0.20901}
+  m_LocalPosition: {x: -16.13, y: 0, z: -0.20901}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2923,7 +2960,7 @@ GameObject:
   - component: {fileID: 1108998994}
   - component: {fileID: 1108998993}
   m_Layer: 0
-  m_Name: Chariot (4)
+  m_Name: Chariot 102
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2960,8 +2997,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3681117451bed6e45b030441e926d549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HunterBrain
-  id: 4
-  TurnSpeed: 2
+  id: 102
+  MaxSpeed: 2
+  RunnerSpeed: 3
+  HunterSpeed: 2
+  GoalAttractionStrength: 2
+  MinDistanceToGoal: 0.3
+  RobotRepulsionStrength: 1.5
+  RobotInfluenceRadius: 3
+  MinRobotSeparation: 0.3
+  WallRepulsionStrength: 1.2
+  WallSafetyMargin: 1.5
+  JitterStrength: 0.3
+  JitterInterval: 0.2
+  CornerChangeInterval: 5
+  HunterFleeRadius: 3
   testTarget: {x: 0, y: 0, z: 0}
   testDrive: 0
 --- !u!54 &1108998994
@@ -3020,7 +3070,7 @@ Transform:
   m_GameObject: {fileID: 1194857474}
   serializedVersion: 2
   m_LocalRotation: {x: -0.038267262, y: 0.9614849, z: -0.1809267, w: -0.20334181}
-  m_LocalPosition: {x: 0.38, y: 0.262, z: 0.405}
+  m_LocalPosition: {x: 100, y: 2.63, z: 0.405}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3466,7 +3516,7 @@ GameObject:
   - component: {fileID: 1378597069}
   - component: {fileID: 1378597068}
   m_Layer: 0
-  m_Name: Chariot (3)
+  m_Name: Chariot 103
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3503,8 +3553,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3681117451bed6e45b030441e926d549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HunterBrain
-  id: 3
-  TurnSpeed: 2
+  id: 103
+  MaxSpeed: 2
+  RunnerSpeed: 3
+  HunterSpeed: 2
+  GoalAttractionStrength: 2
+  MinDistanceToGoal: 0.3
+  RobotRepulsionStrength: 1.5
+  RobotInfluenceRadius: 3
+  MinRobotSeparation: 0.3
+  WallRepulsionStrength: 1.2
+  WallSafetyMargin: 1.5
+  JitterStrength: 0.3
+  JitterInterval: 0.2
+  CornerChangeInterval: 5
+  HunterFleeRadius: 3
   testTarget: {x: 0, y: 0, z: 0}
   testDrive: 0
 --- !u!54 &1378597069
@@ -4487,8 +4550,8 @@ Transform:
   m_GameObject: {fileID: 1902600397}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: -10.93, y: 0, z: 5}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1579298001}
@@ -4509,7 +4572,7 @@ GameObject:
   - component: {fileID: 1921531665}
   - component: {fileID: 1921531666}
   m_Layer: 0
-  m_Name: Chariot (2)
+  m_Name: Chariot 101
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4573,8 +4636,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3681117451bed6e45b030441e926d549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HunterBrain
-  id: 2
-  TurnSpeed: 2
+  id: 101
+  MaxSpeed: 2
+  RunnerSpeed: 3
+  HunterSpeed: 2
+  GoalAttractionStrength: 2
+  MinDistanceToGoal: 0.3
+  RobotRepulsionStrength: 1.5
+  RobotInfluenceRadius: 3
+  MinRobotSeparation: 0.3
+  WallRepulsionStrength: 1.2
+  WallSafetyMargin: 1.5
+  JitterStrength: 0.3
+  JitterInterval: 0.2
+  CornerChangeInterval: 5
+  HunterFleeRadius: 3
   testTarget: {x: 0, y: 0, z: 0}
   testDrive: 0
 --- !u!1 &2083870785
