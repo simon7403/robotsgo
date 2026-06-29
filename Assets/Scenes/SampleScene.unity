@@ -408,7 +408,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 88168246}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70fb6b2532f6e4c4ab0396571e094d7a, type: 3}
   m_Name: 
@@ -421,7 +421,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 88168246}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dd73291d3acafa48af6eb0d7bb53c57, type: 3}
   m_Name: 
@@ -2841,7 +2841,7 @@ Transform:
   m_GameObject: {fileID: 1108998991}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.1, y: 0, z: 0.64}
+  m_LocalPosition: {x: 4.6439304, y: -0.97071, z: 1.035}
   m_LocalScale: {x: 6, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2849,7 +2849,7 @@ Transform:
   - {fileID: 619778800}
   - {fileID: 376730873}
   - {fileID: 445688634}
-  m_Father: {fileID: 1299783109}
+  m_Father: {fileID: 1258692763}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1108998993
 MonoBehaviour:
@@ -3081,6 +3081,8 @@ Transform:
   - {fileID: 546465512}
   - {fileID: 798066682}
   - {fileID: 1294335715}
+  - {fileID: 1921531662}
+  - {fileID: 1108998992}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1294335714
@@ -3209,8 +3211,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 877966221}
-  - {fileID: 1921531662}
-  - {fileID: 1108998992}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1304533789
@@ -4431,7 +4431,7 @@ Transform:
   m_GameObject: {fileID: 1921531661}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.06, y: 0, z: 9.53}
+  m_LocalPosition: {x: 4.6039305, y: -0.97071, z: 9.925}
   m_LocalScale: {x: 6, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4439,7 +4439,7 @@ Transform:
   - {fileID: 1422433010}
   - {fileID: 1373241869}
   - {fileID: 1433224052}
-  m_Father: {fileID: 1299783109}
+  m_Father: {fileID: 1258692763}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1921531665
 Rigidbody:

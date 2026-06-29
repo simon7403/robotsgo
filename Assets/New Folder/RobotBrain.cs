@@ -16,28 +16,28 @@ public class RobotBrain : MonoBehaviour
     public int id = 0;
 
     [Header("Drive")]
-     private float MaxSpeed = 1.0f;
-     private float RunnerSpeed = 0.5f;
-     private float HunterSpeed = 1.0f;
+    private float MaxSpeed = 1.0f;
+    private float RunnerSpeed = 1.0f;
+    private float HunterSpeed = 1.0f;
 
     [Header("Potential Field — Attraction")]
-     private float GoalAttractionStrength = 2.0f;
-     private float MinDistanceToGoal = 0.3f;
+    private float GoalAttractionStrength = 2.0f;
+    private float MinDistanceToGoal = 0.3f;
 
     [Header("Potential Field — Repulsion")]
-     private float RobotRepulsionStrength = 3.5f;
-     private float RobotInfluenceRadius = 2.5f;
-     private float MinRobotSeparation = 0.3f;
-     private float WallRepulsionStrength = 2.5f;
-     private float WallSafetyMargin = 1.0f;
+    private float RobotRepulsionStrength = 4.0f;
+    private float RobotInfluenceRadius = 2.5f;
+    private float MinRobotSeparation = 0.3f;
+    private float WallRepulsionStrength = 3.0f;
+    private float WallSafetyMargin = 1.0f;
 
     [Header("Jitter")]
-     private float JitterStrength = 0.3f;
-     private float JitterInterval = 0.2f;
+    private float JitterStrength = 0.3f;
+    private float JitterInterval = 0.2f;
 
     [Header("Runner — Corner Patrol")]
-     private float CornerChangeInterval = 5f;
-     private float HunterFleeRadius = 3f;
+    private float CornerChangeInterval = 5f;
+    private float HunterFleeRadius = 4.1f;
 
     [Header("Debug")]
     public Vector3 testTarget;
@@ -107,8 +107,6 @@ public class RobotBrain : MonoBehaviour
         _ros.Subscribe<StringMsg>("/game/command", OnGameCommand);
         _ros.Subscribe<BoolMsg>("/robots/seen", OnSeen);
 
-        foreach (var renderer in Object.GetComponentsInChildren<MeshRenderer>())
-            renderer.material = Material1;
 
         PublishReady();
     }
