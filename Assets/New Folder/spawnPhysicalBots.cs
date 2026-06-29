@@ -10,8 +10,8 @@ public class SpawnPhysicalBots : MonoBehaviour
     readonly Dictionary<int, GameObject> _robots = new();
     readonly Dictionary<int, Vector3> _lastPositions = new();
 
-    const float OUTLIER_THRESHOLD = 0f;  // max delta before treating as outlier
-    const float TELEPORT_THRESHOLD = 0.1f;  // above this it's a real teleport, not an outlier
+    const float OUTLIER_THRESHOLD = 0f;      // max delta before treating as outlier
+    const float TELEPORT_THRESHOLD = 0.15f;  // above this it's a real teleport, not an outlier
     const float LERP_SPEED = 0.25f;
 
     void Start()
@@ -22,8 +22,6 @@ public class SpawnPhysicalBots : MonoBehaviour
 
     void UpdateRobots(PoseArrayMsg msg)
     {
-        print(msg);
-        //print($"Received {msg} robot positions");
         for (int i = 0; i < msg.poses.Length; i++)
         {
             if (!_robots.ContainsKey(i))
@@ -39,15 +37,30 @@ public class SpawnPhysicalBots : MonoBehaviour
             var p = msg.poses[i].position;
             var r = msg.poses[i].orientation;
 
-            // 1. Define the local position using your mapping (ROS X -> Unity X, ROS Y -> Unity Z)
-            //Vector3 localPosition = new Vector3((float)p.x + 1f, 0f, (float)p.z); for unity test
-            Vector3 localPosition = new Vector3((float)p.x, 0f, (float)p.y); //for cam
+            // ROS position mapping:
+            // ROS X -> Unity X
+            // ROS Y -> Unity Z
+            Vector3 localPosition = new Vector3((float)p.x, 0f, (float)p.y);
 
-            // 2. Define the local rotation
-            Quaternion localRotation = new Quaternion((float)r.x, (float)r.z, (float)r.y, (float)r.w); //for cam
-            //Quaternion localRotation = new Quaternion((float)r.x, (float)r.y, (float)r.z, (float)r.w); //for unity test
+            // ROS orientation is a Z-yaw quaternion:
+            // ROS yaw 0 degrees  = +X
+            // ROS yaw 90 degrees = +Y
+            //
+            // Unity uses Y-axis yaw:
+            // Unity yaw 0 degrees  = +Z
+            // Unity yaw 90 degrees = +X
+            //
+            // Since ROS Y maps to Unity Z, the inverse conversion is:
+            // Unity yaw = 90 degrees - ROS yaw.
+            double sinyCosp = 2.0 * ((r.w * r.z) + (r.x * r.y));
+            double cosyCosp = 1.0 - (2.0 * ((r.y * r.y) + (r.z * r.z)));
+            double yawRosRad = System.Math.Atan2(sinyCosp, cosyCosp);
+            double yawRosDeg = yawRosRad * Mathf.Rad2Deg;
 
-            // 3. Filter and apply position
+            float yawUnityDeg = (float)(90.0 - yawRosDeg);
+            Quaternion localRotation = Quaternion.Euler(0f, yawUnityDeg, 0f);
+
+            // Filter and apply position
             if (_lastPositions.TryGetValue(i, out Vector3 prev))
             {
                 float dist = Vector3.Distance(prev, localPosition);
@@ -68,7 +81,7 @@ public class SpawnPhysicalBots : MonoBehaviour
             // Store the smoothed position for next frame's outlier check
             _lastPositions[i] = _robots[i].transform.localPosition;
 
-            // 4. Apply rotation directly (relative to script's GameObject parent)
+            // Apply corrected rotation
             _robots[i].transform.localRotation = localRotation;
         }
 

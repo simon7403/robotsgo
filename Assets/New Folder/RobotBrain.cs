@@ -3,6 +3,10 @@ using RosMessageTypes.Std;
 using System.Collections.Generic;
 using Unity.Robotics.ROSTCPConnector;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class RobotBrain : MonoBehaviour
 {
@@ -12,37 +16,42 @@ public class RobotBrain : MonoBehaviour
     public int id = 0;
 
     [Header("Drive")]
-    [SerializeField] private float MaxSpeed = 2.0f;
-    [SerializeField] private float RunnerSpeed = 12.0f;
-    [SerializeField] private float HunterSpeed = 2.0f;
+     private float MaxSpeed = 1.0f;
+     private float RunnerSpeed = 0.5f;
+     private float HunterSpeed = 1.0f;
 
     [Header("Potential Field — Attraction")]
-    [SerializeField] private float GoalAttractionStrength = 2.0f;
-    [SerializeField] private float MinDistanceToGoal = 0.3f;
+     private float GoalAttractionStrength = 2.0f;
+     private float MinDistanceToGoal = 0.3f;
 
     [Header("Potential Field — Repulsion")]
-    [SerializeField] private float RobotRepulsionStrength = 1.5f;
-    [SerializeField] private float RobotInfluenceRadius = 3.0f;
-    [SerializeField] private float MinRobotSeparation = 0.3f;
-    [SerializeField] private float WallRepulsionStrength = 2.5f;
-    [SerializeField] private float WallSafetyMargin = 1.5f;
+     private float RobotRepulsionStrength = 3.5f;
+     private float RobotInfluenceRadius = 2.5f;
+     private float MinRobotSeparation = 0.3f;
+     private float WallRepulsionStrength = 2.5f;
+     private float WallSafetyMargin = 1.0f;
 
     [Header("Jitter")]
-    [SerializeField] private float JitterStrength = 0.3f;
-    [SerializeField] private float JitterInterval = 0.2f;
+     private float JitterStrength = 0.3f;
+     private float JitterInterval = 0.2f;
 
     [Header("Runner — Corner Patrol")]
-    [SerializeField] private float CornerChangeInterval = 5f;
-    [SerializeField] private float HunterFleeRadius = 3f;
+     private float CornerChangeInterval = 5f;
+     private float HunterFleeRadius = 3f;
 
     [Header("Debug")]
     public Vector3 testTarget;
     public bool testDrive = false;
 
+    public Material Material1;
+    public GameObject Object;
+
+
     #endregion
 
     #region State
 
+    private float _startTime = 0f;
     private int _runnerId = -1;
     private bool _runnerVisible = false;
     private Vector3 _runnerPos;
@@ -98,6 +107,9 @@ public class RobotBrain : MonoBehaviour
         _ros.Subscribe<StringMsg>("/game/command", OnGameCommand);
         _ros.Subscribe<BoolMsg>("/robots/seen", OnSeen);
 
+        foreach (var renderer in Object.GetComponentsInChildren<MeshRenderer>())
+            renderer.material = Material1;
+
         PublishReady();
     }
 
@@ -151,8 +163,8 @@ public class RobotBrain : MonoBehaviour
             {
                 _runnerId = newRunnerId;
                 _gameState = GameState.Start;
+                _startTime = Time.time;
                 MaxSpeed = (id == _runnerId) ? RunnerSpeed : HunterSpeed;
-                Debug.Log($"[RobotBrain:{id}] Game started — runner = {_runnerId}");
             }
             return;
         }
@@ -231,6 +243,8 @@ public class RobotBrain : MonoBehaviour
 
     void HunterBrain()
     {
+        if (Time.time - _startTime < 2f) return;
+
         if (_runnerVisible)
             driveTo(nextPoint(_runnerPos));
         else
@@ -332,9 +346,8 @@ public class RobotBrain : MonoBehaviour
 
         if (Mathf.Abs(angleDiff) < 30f)
         {
-            float speedFactor = 1f - (Mathf.Abs(angleDiff) / 30f);
             Vector3 forwardFlat = new Vector3(transform.forward.x, 0, transform.forward.z);
-            _rb.linearVelocity = forwardFlat * MaxSpeed * speedFactor;
+            _rb.linearVelocity = forwardFlat * MaxSpeed;
         }
         else
         {
@@ -354,6 +367,7 @@ public class RobotBrain : MonoBehaviour
         _currentCornerIndex = -1;
         _lastCornerChangeTime = 0f;
         _gameState = GameState.Idle;
+        _startTime = 0f;
 
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
